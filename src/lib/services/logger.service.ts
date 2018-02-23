@@ -22,9 +22,7 @@ export const LoggerService = {
     }
   },
 
-  clear: () => {
-    INSTANCESMAP.clear();
-  },
+  clear: () => INSTANCESMAP.clear(),
 
   deleteInstance: (name: string, type: string) => {
     if (INSTANCESMAP.has(type)) {
@@ -43,7 +41,7 @@ export const LoggerService = {
   },
 
   getInstance: (name: string, type: string, useDefault: boolean = true) => {
-    if (INSTANCESMAP.has(type)) {
+    if (INSTANCESMAP.has(type) && INSTANCESMAP.get(type).has(name)) {
       return INSTANCESMAP.get(type).get(name);
     } else {
       if (useDefault) {
@@ -61,14 +59,14 @@ export const LoggerService = {
 
     const typemap = INSTANCESMAP.get(type);
 
-    if (!typemap.has(name)) {
+    if (typemap.has(name)) {
+      return false;
+    } else {
       const Logger = LoggerModuleService.getLogger(logger).module;
       const instance = new Logger(properties, name, type);
       typemap.set(name, instance);
 
       return true;
-    } else {
-      return false;
     }
   }
 };
