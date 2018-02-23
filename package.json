@@ -23,7 +23,7 @@
     "cix-lic": "cix-lic --conf"
   },
   "author": "Architecode Corporation",
-  "license": "Architecode Open Source Software License",
+  "license": "MIT",
   "repository": "git+https://github.com/architecode/archdevlogger",
   "dependencies": {
     "archappenv": "^2.0.0-alpha.56"
