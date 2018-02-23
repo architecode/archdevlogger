@@ -1,10 +1,11 @@
 import * as OS from "os";
+import { LogProperties } from "./logproperties";
 
 export class LogHeaders {
-  Author: any;
+  Author: string;
 
-  constructor(properties: any = {}, name?: string, type?: string) {
-    const headers: any = properties.logheaders || {};
+  constructor(properties: LogProperties = {}, name?: string, type?: string) {
+    const headers = properties.logheaders || {};
     Object.assign(this, headers);
 
     this.setAuthor(name, type);
