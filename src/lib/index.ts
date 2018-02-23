@@ -1,7 +1,7 @@
 import { CommonLogLevels, SysLogLevels, LogHeaders } from "./core";
-import { DefaultLogger, LoggerModuleService, LoggerService } from "./services";
 import { ExtensibleEventLog } from "./extensible.eventlog";
 import { DefinedLoggerConfig, ExtensibleLogger } from "./extensible.logger";
+import { DefaultLogger, LoggerModuleService, LoggerService } from "./services";
 
 export const ArchDevLogger = {
   Core: {
@@ -9,8 +9,8 @@ export const ArchDevLogger = {
     SysLogLevels,
     LogHeaders
   },
-  DefinedLoggerConfig,
   ExtensibleEventLog,
+  DefinedLoggerConfig,
   ExtensibleLogger,
   Services: {
     DefaultLogger,
