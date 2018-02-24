@@ -1,37 +1,43 @@
 import { EventEmitter } from "events";
-import { CommonLogLevels, LogHeaders, LogProperties } from "./core";
+import { CommonLogLevels, LogConfig, LogHeaders } from "./core";
 
 export const DefinedLoggerConfig = {
   level: "info",
   levels: CommonLogLevels.levels
 };
 
-export class ExtensibleLogger extends EventEmitter {
+export abstract class ExtensibleLogger extends EventEmitter {
+  Author: string;
   Headers: LogHeaders;
 
-  constructor(properties: LogProperties = {}, name?: string, type?: string) {
+  constructor(config: LogConfig = {}, name?: string, type?: string) {
     super();
 
-    const self: any = this;
-    const levels = properties.levels || DefinedLoggerConfig.levels;
-    Object.keys(levels).forEach(level =>
-      self[level] = (message: string, data?: any) => self.log(level, message, data));
+    Object.defineProperties(this, {
+      "Author": {
+        configurable: false,
+        enumerable: true,
+        get: () => this.Headers.Author,
+      }
+    });
 
-    this.Headers = new LogHeaders(properties, name, type);
-    this.configure(properties, name, type);
+    this.configure(config, name, type);
   }
 
   setAuthor(name?: string, type?: string) {
     this.Headers.setAuthor(name, type);
   }
 
-  configure(properties: LogProperties, name: string, type: string) {
-    this.emit("configured", { properties, name, type });
+  configure(config: LogConfig, name: string, type: string) {
+    const self: any = this;
+    const levels = config.levels || DefinedLoggerConfig.levels;
+    Object.keys(levels).forEach(level =>
+      self[level] = (message: string, data?: any) => self.log(level, message, data));
+
+    this.Headers = new LogHeaders(config.logheaders, name, type);
   }
 
-  log(level: string, message: string, data?: any) {
-    this.emit("logged", { level, message, data });
-  }
+  abstract log(level: string, message: string, data?: any): void;
 }
 
 Object.freeze(DefinedLoggerConfig);
