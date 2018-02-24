@@ -20,64 +20,58 @@ describe('logheaders.js tests', () => {
       expect(instance).to.deep.equal(expected);
     });
 
-    it('expect to create an instance with properties, and name.', () => {
+    it('expect to create an instance with headers, and name.', () => {
       // arranges
-      const properties = {
-        logheaders: {
-          header: 'sample'
-        }
+      const logHeaders = {
+        Header: 'sample'
       };
       const name = 'SampleLogger';
       const expected = {
-        header: 'sample',
+        Header: 'sample',
         Author: name
       };
 
       // acts
-      const instance = new LogHeaders(properties, name);
+      const instance = new LogHeaders(logHeaders, name);
 
       // asserts
       expect(instance).to.deep.equal(expected);
     });
 
-    it('expect to create an instance with properties, and type.', () => {
+    it('expect to create an instance with headers, and type.', () => {
       // arranges
-      const properties = {
-        logheaders: {
-          header: 'sample',
-          extra: 'test'
-        }
+      const logHeaders = {
+        Header: 'sample',
+        Extra: 'test'
       };
       const type = 'Module';
       const expected = {
-        header: 'sample',
-        extra: 'test',
+        Header: 'sample',
+        Extra: 'test',
         Author: `::${type}`
       };
 
       // acts
-      const instance = new LogHeaders(properties, undefined, type);
+      const instance = new LogHeaders(logHeaders, undefined, type);
 
       // asserts
       expect(instance).to.deep.equal(expected);
     });
 
-    it('expect to create an instance with properties, name, and type.', () => {
+    it('expect to create an instance with headers, name, and type.', () => {
       // arranges
-      const properties = {
-        logheaders: {
-          header: 'sample'
-        }
+      const logHeaders = {
+        Header: 'sample'
       };
       const name = 'SampleLogger';
       const type = 'Module';
       const expected = {
-        header: 'sample',
+        Header: 'sample',
         Author: `${name}::${type}`
       };
 
       // acts
-      const instance = new LogHeaders(properties, name, type);
+      const instance = new LogHeaders(logHeaders, name, type);
 
       // asserts
       expect(instance).to.deep.equal(expected);
