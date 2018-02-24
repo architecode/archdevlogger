@@ -2,6 +2,8 @@ import { CommonLogLevels, SysLogLevels, LogHeaders } from "./lib/core";
 import { DefaultLogger, LoggerModuleService, LoggerService } from "./lib/services";
 import { ExtensibleEventLog, DefinedLoggerConfig, ExtensibleLogger } from "./lib";
 
+export { LogConfig } from "./lib/core";
+
 export const ArchDevLogger = {
   Core: {
     CommonLogLevels,
