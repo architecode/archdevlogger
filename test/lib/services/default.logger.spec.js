@@ -32,7 +32,7 @@ describe('default.logger.js tests', () => {
       const config = { logger: 'Logger', properties: {} };
 
       // acts
-      DefaultLogger.setConfig(config);
+      DefaultLogger.set(config);
       const instance = DefaultLogger.get('name');
 
       // asserts

@@ -1,20 +1,21 @@
 import * as Path from "path";
 import { AppEnv } from "archappenv";
+import { LoggerDefined } from "../common/logger.defined";
 
 const MODULESMAP: Map<string, { module: any, description: string }> = new Map();
 
 export const LoggerModuleService = {
-  initialize: (defineds: { logger: string; module: string; description?: string; }[], resolvedBase?: string) => {
-    resolvedBase = resolvedBase || AppEnv.Util.packagePath();
+  initialize: (defineds: LoggerDefined[], based?: string) => {
+    const resolved = based || AppEnv.Util.packagePath();
 
-    for (const each of defineds) {
+    defineds.forEach(each => {
       const definedModule = (each.module.indexOf("/") === -1 && each.module.indexOf("\\") === -1) ? each.module :
         Path.isAbsolute(each.module) ? each.module :
-          Path.resolve(resolvedBase, each.module);
+          Path.resolve(resolved, each.module);
 
-      const Module = require(definedModule);
-      LoggerModuleService.setLogger(each.logger, Module, each.description);
-    }
+      const _module = require(definedModule);
+      LoggerModuleService.setLogger(each.logger, _module, each.description);
+    });
   },
 
   clear: () => MODULESMAP.clear(),
