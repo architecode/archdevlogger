@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { CommonLogLevels, LogConfig, LogHeaders } from "./core";
+import { CommonLogLevels, LogHeaders, LogProperties } from "./core";
 
 export const DefinedLoggerConfig = {
   level: "info",
@@ -10,7 +10,7 @@ export abstract class ExtensibleLogger extends EventEmitter {
   Author: string;
   Headers: LogHeaders;
 
-  constructor(config: LogConfig = {}, name?: string, type?: string) {
+  constructor(properties: LogProperties = {}, name?: string, type?: string) {
     super();
 
     Object.defineProperties(this, {
@@ -21,20 +21,20 @@ export abstract class ExtensibleLogger extends EventEmitter {
       }
     });
 
-    this.configure(config, name, type);
+    this.configure(properties, name, type);
   }
 
   setAuthor(name?: string, type?: string) {
     this.Headers.setAuthor(name, type);
   }
 
-  configure(config: LogConfig, name: string, type: string) {
+  configure(properties: LogProperties, name: string, type: string) {
     const self: any = this;
-    const levels = config.levels || DefinedLoggerConfig.levels;
+    const levels = properties.levels || DefinedLoggerConfig.levels;
     Object.keys(levels).forEach(level =>
       self[level] = (message: string, data?: any) => self.log(level, message, data));
 
-    this.Headers = new LogHeaders(config.logheaders, name, type);
+    this.Headers = new LogHeaders(properties.logheaders, name, type);
   }
 
   abstract log(level: string, message: string, data?: any): void;

@@ -4,37 +4,37 @@ import { DefaultLogger } from "./default.logger";
 const INSTANCESMAP: Map<string, Map<string, any>> = new Map();
 
 export const LoggerService = {
-  initialize: (configs: {
-    defineds: { logger: string; module: string; description?: string; }[];
-    setups?: { name: string; type: string; logger: string; properties?: any; }[];
-    default?: { logger: string; properties?: any; }
-  } = { defineds: [] }) => {
-    LoggerModuleService.initialize(configs.defineds);
+  initialize: (
+    configs: {
+      defineds?: { logger: string; module: string; description?: string; }[];
+      setups?: { name: string; type: string; logger: string; properties?: any; }[];
+      default?: { logger: string; config?: any; }
+    } = {},
+  ) => {
+    LoggerService.define(configs.defineds);
+    LoggerService.setup(configs.setups);
+    LoggerService.default(configs.default);
+  },
 
-    if (Array.isArray(configs.setups)) {
-      for (const setup of configs.setups) {
-        LoggerService.setInstance(setup.name, setup.type, setup.logger, setup.properties);
-      }
-    }
+  define: (defineds: { logger: string; module: string; description?: string; }[] = []) => {
+    LoggerModuleService.initialize(defineds);
+  },
 
-    if (configs.default) {
-      DefaultLogger.setConfig(configs.default);
-    }
+  setup: (setups: { name: string; type: string; logger: string; properties?: any; }[] = []) => {
+    setups.forEach(each => LoggerService.setInstance(each.name, each.type, each.logger, each.properties));
+  },
+
+  default: (val: { logger: string; config?: any; }) => {
+    DefaultLogger.set(val);
   },
 
   clear: () => INSTANCESMAP.clear(),
 
+  hasInstance: (name: string, type: string) => INSTANCESMAP.has(type) && INSTANCESMAP.get(type).has(name),
+
   deleteInstance: (name: string, type: string) => {
     if (INSTANCESMAP.has(type)) {
       return INSTANCESMAP.get(type).delete(name);
-    } else {
-      return false;
-    }
-  },
-
-  hasInstance: (name: string, type: string) => {
-    if (INSTANCESMAP.has(type)) {
-      return INSTANCESMAP.get(type).has(name);
     } else {
       return false;
     }
@@ -57,14 +57,14 @@ export const LoggerService = {
       INSTANCESMAP.set(type, new Map());
     }
 
-    const typemap = INSTANCESMAP.get(type);
+    const typeMap = INSTANCESMAP.get(type);
 
-    if (typemap.has(name)) {
+    if (typeMap.has(name)) {
       return false;
     } else {
       const Logger = LoggerModuleService.getLogger(logger).module;
       const instance = new Logger(properties, name, type);
-      typemap.set(name, instance);
+      typeMap.set(name, instance);
 
       return true;
     }
