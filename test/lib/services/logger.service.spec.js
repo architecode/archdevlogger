@@ -42,7 +42,7 @@ describe('logger.service.js tests', () => {
           { logger: 'Logger', module: './test/resources/logger' }
         ],
         setups: [
-          { logger: 'Logger', name, type }
+          { logger: 'Logger', setup: {}, name, type }
         ],
         default: {
           logger: 'Logger',

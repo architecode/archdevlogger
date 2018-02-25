@@ -106,13 +106,13 @@ describe('logheaders.js tests', () => {
     });
   });
 
-  describe('#timestamp()', () => {
-    it('expect to get a timestamp.', () => {
+  describe('#time()', () => {
+    it('expect to get a time.', () => {
       // arranges
       const instance = new LogHeaders();
 
       // acts
-      const result = instance.timestamp();
+      const result = instance.time();
       const datetime = new Date(result);
 
       // asserts

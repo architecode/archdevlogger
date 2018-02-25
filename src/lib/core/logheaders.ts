@@ -1,5 +1,5 @@
 import * as OS from "os";
-import { LogConfig } from "./logconfig";
+import { LogProperties } from "./logproperties";
 
 export class LogHeaders {
   Author: string;
@@ -30,7 +30,7 @@ export class LogHeaders {
     return OS.hostname();
   }
 
-  timestamp() {
+  time() {
     return new Date().toISOString();
   }
 }
