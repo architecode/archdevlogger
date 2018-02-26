@@ -3,8 +3,10 @@ import { LogProperties } from "./logproperties";
 
 export class LogHeaders {
   Author: string;
+  Logger: string;
 
-  constructor(logHeaders: Object = {}, name?: string, type?: string) {
+  constructor(logHeaders: Object = {}, name?: string, type?: string, logger?: string) {
+    this.Logger = logger;
     Object.assign(this, logHeaders);
 
     this.setAuthor(name, type);
