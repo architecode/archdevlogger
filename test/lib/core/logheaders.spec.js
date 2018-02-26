@@ -10,7 +10,8 @@ describe('logheaders.js tests', () => {
     it('expect to create a default instance.', () => {
       // arranges
       const expected = {
-        Author: 'UNKNOWN'
+        Author: 'UNKNOWN',
+        Logger: undefined
       };
 
       // acts
@@ -28,7 +29,8 @@ describe('logheaders.js tests', () => {
       const name = 'SampleLogger';
       const expected = {
         Header: 'sample',
-        Author: name
+        Author: name,
+        Logger: undefined
       };
 
       // acts
@@ -48,7 +50,8 @@ describe('logheaders.js tests', () => {
       const expected = {
         Header: 'sample',
         Extra: 'test',
-        Author: `::${type}`
+        Author: `::${type}`,
+        Logger: undefined
       };
 
       // acts
@@ -65,13 +68,15 @@ describe('logheaders.js tests', () => {
       };
       const name = 'SampleLogger';
       const type = 'Module';
+      const logger = 'TestLogger';
       const expected = {
         Header: 'sample',
-        Author: `${name}::${type}`
+        Author: `${name}::${type}`,
+        Logger: logger
       };
 
       // acts
-      const instance = new LogHeaders(logHeaders, name, type);
+      const instance = new LogHeaders(logHeaders, name, type, logger);
 
       // asserts
       expect(instance).to.deep.equal(expected);
@@ -112,7 +117,7 @@ describe('logheaders.js tests', () => {
       const instance = new LogHeaders();
 
       // acts
-      const result = instance.time();
+      const result = instance.timestamp();
       const datetime = new Date(result);
 
       // asserts
