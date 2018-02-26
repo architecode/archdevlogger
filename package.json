@@ -1,7 +1,7 @@
 {
   "name": "archdevlogger",
   "version": "2.0.0-alpha.21",
-  "description": "Architecode Logger Based Library",
+  "description": "Architecode Logging Service with Extensible Logger Library",
   "main": "./dst/index.js",
   "typings": "./typings/index.d.ts",
   "scripts": {

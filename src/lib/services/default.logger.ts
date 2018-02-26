@@ -6,7 +6,7 @@ export const DefaultLogger = {
   get: (name?: string, type?: string) => {
     if (SETUP) {
       const Logger = LoggerModuleService.getLogger(SETUP.logger).module;
-      const loggerInstance = new Logger(SETUP.properties, name, type);
+      const loggerInstance = new Logger(name, type, SETUP.logger, SETUP.properties);
 
       return loggerInstance;
     } else {

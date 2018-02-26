@@ -63,7 +63,7 @@ export const LoggerService = {
       return false;
     } else {
       const Logger = LoggerModuleService.getLogger(logger).module;
-      const instance = new Logger(properties, name, type);
+      const instance = new Logger(name, type, logger, properties);
       typeMap.set(name, instance);
 
       return true;
