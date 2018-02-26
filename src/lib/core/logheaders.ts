@@ -30,7 +30,7 @@ export class LogHeaders {
     return OS.hostname();
   }
 
-  time() {
+  timestamp() {
     return new Date().toISOString();
   }
 }
