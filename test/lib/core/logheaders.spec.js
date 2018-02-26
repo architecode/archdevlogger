@@ -112,7 +112,7 @@ describe('logheaders.js tests', () => {
       const instance = new LogHeaders();
 
       // acts
-      const result = instance.time();
+      const result = instance.timestamp();
       const datetime = new Date(result);
 
       // asserts
