@@ -25,7 +25,7 @@ export class LogHeaders {
   }
 
   pid() {
-    return process.pid.toString();
+    return process.pid;
   }
 
   hostname() {
