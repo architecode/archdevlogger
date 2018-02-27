@@ -8,7 +8,7 @@ export const LoggerService = {
     configs: {
       defineds?: { logger: string; module: string; description?: string; }[];
       setups?: { name: string; type: string; logger: string; properties?: any; }[];
-      default?: { logger: string; config?: any; }
+      default?: { logger: string; properties?: any; }
     } = {},
   ) => {
     LoggerService.define(configs.defineds);
@@ -16,17 +16,12 @@ export const LoggerService = {
     LoggerService.default(configs.default);
   },
 
-  define: (defineds: { logger: string; module: string; description?: string; }[] = []) => {
-    LoggerModuleService.initialize(defineds);
-  },
+  define: (defineds: { logger: string; module: string; description?: string; }[] = []) => LoggerModuleService.initialize(defineds),
 
-  setup: (setups: { name: string; type: string; logger: string; properties?: any; }[] = []) => {
-    setups.forEach(each => LoggerService.setInstance(each.name, each.type, each.logger, each.properties));
-  },
+  setup: (setups: { name: string; type: string; logger: string; properties?: any; }[] = []) =>
+    setups.forEach(each => LoggerService.setInstance(each.name, each.type, each.logger, each.properties)),
 
-  default: (val: { logger: string; config?: any; }) => {
-    DefaultLogger.set(val);
-  },
+  default: (setup: { logger: string; properties?: any; }) => DefaultLogger.set(setup),
 
   clear: () => INSTANCESMAP.clear(),
 
@@ -68,7 +63,7 @@ export const LoggerService = {
 
       return true;
     }
-  }
+  },
 };
 
 Object.freeze(LoggerService);
