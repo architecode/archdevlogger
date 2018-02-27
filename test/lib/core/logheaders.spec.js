@@ -87,7 +87,7 @@ describe('logheaders.js tests', () => {
     it('expect to get a process id.', () => {
       // arranges
       const instance = new LogHeaders();
-      const expected = process.pid.toString();
+      const expected = process.pid;
 
       // acts
       const result = instance.pid();
