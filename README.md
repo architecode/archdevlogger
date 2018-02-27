@@ -4,7 +4,7 @@ Logging Service with Extensible Logger Library
 
 ## Overview
 
-
+The library provides **Logging Service** with **Extensible Logger** using **Defineds-Setups Pattern** and **Configurations**.
 
 ## Concepts
 
@@ -86,7 +86,7 @@ const examples = [
 
 #### Default Logger
 
-It provides a default logger.
+It provides the Default Logger.
 
 ```javascript
 const defaultLogger = {
