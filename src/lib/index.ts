@@ -1,1 +1,1 @@
-export { DefinedLoggerConfig, ExtensibleLogger } from "./extensible.logger";
+export { ExtensibleLogger } from "./extensible.logger";

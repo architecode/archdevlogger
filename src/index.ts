@@ -1,7 +1,7 @@
 import { LoggerDefined } from "./lib/common";
 import { LogHeaders, CommonLogLevels, SysLogLevels } from "./lib/core";
-import { DefaultLogger, LoggerModuleService, LoggerService } from "./lib/services";
-import { DefinedLoggerConfig, ExtensibleLogger } from "./lib";
+import { DefinedLoggerConfig, DefaultLogger, LoggerModuleService, LoggerService } from "./lib/services";
+import { ExtensibleLogger } from "./lib";
 
 export { LoggerConfig, LoggerDefined, LoggerSetup } from "./lib/common";
 export { LogProperties } from "./lib/core";
@@ -13,11 +13,11 @@ export const ArchDevLogger = {
     SysLogLevels,
   },
   Services: {
+    DefinedLoggerConfig,
     DefaultLogger,
     LoggerModuleService,
     LoggerService,
   },
-  DefinedLoggerConfig,
   ExtensibleLogger,
 };
 
