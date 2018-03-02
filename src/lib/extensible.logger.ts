@@ -1,10 +1,6 @@
 import { EventEmitter } from "events";
-import { CommonLogLevels, LogHeaders, LogProperties } from "./core";
-
-export const DefinedLoggerConfig = {
-  level: "info",
-  levels: CommonLogLevels.levels
-};
+import { LogHeaders, LogProperties } from "./core";
+import { DefinedLoggerConfig } from "./services";
 
 export abstract class ExtensibleLogger extends EventEmitter {
   Author: string;
