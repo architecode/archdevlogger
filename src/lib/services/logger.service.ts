@@ -1,69 +1,52 @@
-import { LoggerModuleService } from "./logger.module.service";
-import { DefaultLogger } from "./default.logger";
+import { ArchDevLoggerError } from "../errors";
+import { LoggerRegistry } from "../core";
 
-const INSTANCESMAP: Map<string, Map<string, any>> = new Map();
+export class LoggerService {
+  private Registry: LoggerRegistry;
 
-export const LoggerService = {
-  initialize: (
-    configs: {
-      defineds?: { logger: string; module: string; description?: string; }[];
-      setups?: { name: string; type: string; logger: string; properties?: any; }[];
-      default?: { logger: string; properties?: any; }
-    } = {},
-  ) => {
-    LoggerService.define(configs.defineds);
-    LoggerService.setup(configs.setups);
-    LoggerService.default(configs.default);
-  },
+  constructor(options: { useInstanceCache: boolean; }) {
+    Object.defineProperties(this, {
+      "Registry": {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        value: new LoggerRegistry()
+      },
+    });
+  }
 
-  define: (defineds: { logger: string; module: string; description?: string; }[] = []) => LoggerModuleService.initialize(defineds),
+  getDefaultLogger() {
+    return this.Registry.getDefaultLogger();
+  }
 
-  setup: (setups: { name: string; type: string; logger: string; properties?: any; }[] = []) =>
-    setups.forEach(each => LoggerService.setInstance(each.name, each.type, each.logger, each.properties)),
+  setDefaultLogger(logger: string, properties?: any) {
+    this.Registry.setDefaultLogger(logger, properties);
+  }
 
-  default: (setup: { logger: string; properties?: any; }) => DefaultLogger.set(setup),
+  getLoggerModule(logger: string) {
+    return this.Registry.getLoggerModule(logger);
+  }
 
-  clear: () => INSTANCESMAP.clear(),
+  setLoggerModule(logger: string, LoggerModule: any) {
+    this.Registry.setLoggerModule(logger, LoggerModule);
+  }
 
-  hasInstance: (name: string, type: string) => INSTANCESMAP.has(type) && INSTANCESMAP.get(type).has(name),
+  hasLoggerModule(logger: string) {
+    return this.Registry.hasLoggerModule(logger);
+  }
 
-  deleteInstance: (name: string, type: string) => {
-    if (INSTANCESMAP.has(type)) {
-      return INSTANCESMAP.get(type).delete(name);
-    } else {
-      return false;
-    }
-  },
+  getLoggerSetup(name: string, type: string) {
+    return this.Registry.getLoggerSetup(name, type);
+  }
 
-  getInstance: (name: string, type: string, useDefault: boolean = true) => {
-    if (INSTANCESMAP.has(type) && INSTANCESMAP.get(type).has(name)) {
-      return INSTANCESMAP.get(type).get(name);
-    } else {
-      if (useDefault) {
-        return DefaultLogger.get(name, type);
-      } else {
-        return undefined;
-      }
-    }
-  },
+  setLoggerSetup(name: string, type: string, logger?: string, properties?: any) {
+    this.Registry.setLoggerSetup(name, type, logger, properties);
+  }
 
-  setInstance: (name: string, type: string, logger: string, properties?: any) => {
-    if (!INSTANCESMAP.has(type)) {
-      INSTANCESMAP.set(type, new Map());
-    }
+  hasLoggerSetup(name: string, type: string) {
+    return this.Registry.hasLoggerSetup(name, type);
+  }
 
-    const typeMap = INSTANCESMAP.get(type);
-
-    if (typeMap.has(name)) {
-      return false;
-    } else {
-      const Logger = LoggerModuleService.getLogger(logger).module;
-      const instance = new Logger(name, type, logger, properties);
-      typeMap.set(name, instance);
-
-      return true;
-    }
-  },
-};
-
-Object.freeze(LoggerService);
+  resolveLogger(name: string, type: string) {
+  }
+}

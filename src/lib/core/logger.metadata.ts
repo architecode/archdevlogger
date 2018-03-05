@@ -1,23 +1,29 @@
 import * as OS from "os";
-import { LogProperties } from "./logproperties";
 
-export class LogHeaders {
+export class LoggerMetadata {
   Author: string;
   Logger: string;
 
-  constructor(logHeaders: Object = {}, name?: string, type?: string, logger?: string) {
-    this.Logger = logger;
-    Object.assign(this, logHeaders);
+  constructor(metadata: object = {}, name?: string, type?: string, logger?: string) {
+    Object.defineProperties(this, {
+      "Logger": {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: logger
+      }
+    });
 
+    Object.assign(this, metadata);
     this.setAuthor(name, type);
   }
 
   setAuthor(name?: string, type?: string) {
-    if (name != undefined && type != undefined) {
+    if (name && type) {
       this.Author = `${name}::${type}`;
-    } else if (name != undefined) {
+    } else if (name) {
       this.Author = name;
-    } else if (type != undefined) {
+    } else if (type) {
       this.Author = `::${type}`;
     } else {
       this.Author = "UNKNOWN";
