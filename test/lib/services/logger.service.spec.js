@@ -24,7 +24,18 @@ describe('logger.service.js tests', () => {
       log() { }
     }
 
-    it('expect to create an instance of LoggerService.', () => {
+    it('expect to configure with empty configs.', () => {
+      // arranges
+      const instance = new LoggerService();
+
+      // acts
+      const act = () => instance.configure();
+
+      // asserts
+      expect(act).not.to.throw();
+    });
+
+    it('expect to configure with valued configs.', () => {
       // arranges
       const instance = new LoggerService();
       const configs = {
@@ -34,15 +45,56 @@ describe('logger.service.js tests', () => {
         ],
         loggerSetups: [
           { name: 'TestLogger', type: 'Module', logger: 'Logger', properties: {} },
-          { name: 'TestLogger', type: 'Module', logger: 'Logger', properties: {} },
         ]
       };
 
       // acts
-      instance.configure(configs);
+      const act = () => instance.configure(configs);
 
       // asserts
-      expect(instance).to.be.true;
+      expect(act).not.to.throw();
+    });
+
+    it('expect to configure and get a default logger.', () => {
+      // arranges
+      const service = new LoggerService();
+      const configs = {
+        defaultLogger: { logger: 'Logger', properties: {} }
+      };
+      service.configure(configs);
+
+      // acts
+      const defaultLogger = service.getDefaultLogger();
+
+      // asserts
+      expect(defaultLogger.logger).to.equal(configs.defaultLogger.logger);
+      expect(defaultLogger.properties).to.equal(configs.defaultLogger.properties);
+    });
+
+    it('expect to configure and get a logger.', () => {
+      // arranges
+      const service = new LoggerService();
+      const name = 'TestLogger';
+      const type = 'Module';
+      const logger = 'Logger';
+      const configs = {
+        loggerDefault: { logger, properties: {} },
+        loggerModules: [
+          { logger, LoggerModule: TestLogger },
+        ],
+        loggerSetups: [
+          { name, type, logger, properties: {} },
+        ]
+      };
+      service.configure(configs);
+
+      // acts
+      const setup = service.getLoggerSetup(name, type);
+
+      // asserts
+      expect(setup.name).to.equal(name);
+      expect(setup.type).to.equal(type);
+      expect(setup.logger).to.equal(logger);
     });
   });
 

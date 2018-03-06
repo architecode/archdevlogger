@@ -15,12 +15,12 @@ export class LoggerService {
   }
 
   configure(configs: {
-    loggerDefault?: { logger: string; properties?: any; };
+    defaultLogger?: { logger: string; properties?: any; };
     loggerModules?: { logger: string; LoggerModule: any; }[];
     loggerSetups?: { name: string; type: string; logger?: string; properties?: any; }[];
   } = {}) {
-    if (configs.loggerDefault) {
-      this.setDefaultLogger(configs.loggerDefault.logger, configs.loggerDefault.properties);
+    if (configs.defaultLogger) {
+      this.setDefaultLogger(configs.defaultLogger.logger, configs.defaultLogger.properties);
     }
 
     if (Array.isArray(configs.loggerModules)) {
