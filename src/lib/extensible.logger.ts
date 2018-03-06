@@ -2,12 +2,28 @@ import { EventEmitter } from "events";
 import { DefinedLoggerProperties } from "./core";
 import { ILoggerProperties, LoggerMetadata } from "./core";
 
-export abstract class ExtensibleLogger extends EventEmitter {
+export abstract class ExtensibleLogger<PropertiesType> extends EventEmitter {
   Author: string;
   Metadata: LoggerMetadata;
+  Properties: PropertiesType;
 
   constructor(name?: string, type?: string, logger?: string, properties: ILoggerProperties = {}) {
     super();
+
+    Object.defineProperties(this, {
+      "Metadata": {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: new LoggerMetadata(properties.metadata, name, type, logger),
+      },
+      "Properties": {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: properties,
+      },
+    });
 
     Object.defineProperties(this, {
       "Author": {
@@ -17,6 +33,7 @@ export abstract class ExtensibleLogger extends EventEmitter {
       }
     });
 
+    this.setAuthor(name, type);
     this.configure(name, type, logger, properties);
   }
 
@@ -29,8 +46,6 @@ export abstract class ExtensibleLogger extends EventEmitter {
     const levels = properties.levels || DefinedLoggerProperties.levels;
     Object.keys(levels).forEach(level =>
       self[level] = (message: string, data?: any) => self.log(level, message, data));
-
-    this.Metadata = new LoggerMetadata(properties.metadata, name, type, logger);
   }
 
   abstract log(level: string, message: string, data?: any): void;

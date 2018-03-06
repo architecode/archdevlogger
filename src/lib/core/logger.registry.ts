@@ -1,8 +1,4 @@
-import { ArchDevLoggerError } from "../errors";
-
-export interface LoggerRegistryOptions {
-  useInstanceCache?: boolean;
-}
+import { UndefinedDefaultLoggerError } from "../errors";
 
 export class LoggerRegistry {
   UseInstanceCache: boolean;
@@ -10,7 +6,7 @@ export class LoggerRegistry {
   private ModulesMap: Map<string, any>;
   private SetupsMap: Map<string, Map<string, { logger?: string; properties?: any; instance?: any; }>>;
 
-  constructor(options: LoggerRegistryOptions = {}) {
+  constructor(options: { useInstanceCache?: boolean; } = {}) {
     Object.defineProperties(this, {
       "UseInstanceCache": {
         configurable: false,
@@ -88,7 +84,7 @@ export class LoggerRegistry {
     if (Logger) {
       return new Logger(properties || this.DefaultLogger.properties);
     } else {
-      throw new ArchDevLoggerError("Default Logger Undefined");
+      throw new UndefinedDefaultLoggerError();
     }
   }
 

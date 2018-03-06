@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const ArchDevLoggerError = require('../../../dst/lib/errors').ArchDevLoggerError;
+const UndefinedDefaultLoggerError = require('../../../dst/lib/errors').UndefinedDefaultLoggerError;
 const LoggerRegistry = require('../../../dst/lib/core/logger.registry').LoggerRegistry;
 
 describe('logger.registry.js tests', () => {
@@ -194,7 +194,7 @@ describe('logger.registry.js tests', () => {
       const act = () => registry.resolveDefaultLogger();
 
       // asserts
-      expect(act).to.throw(ArchDevLoggerError);
+      expect(act).to.throw(UndefinedDefaultLoggerError);
     });
   });
 
