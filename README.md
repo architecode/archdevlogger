@@ -40,7 +40,7 @@ const service = new ArchDevLogger.Services.LoggerService(options);
 
 Logger Service defines **Default Logger** by _logger_ and _properties_.
 
-+ **logger**: _string_ - defines the **name** of logger module
++ **logger**: _string_ - defines the **name** of default logger module
 + **properties**: _any_ - defines the **properties** of default logger instance
 
 ```javascript
