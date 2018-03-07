@@ -42,7 +42,13 @@ describe('logger.service.js tests', () => {
       const configs = {
         loggerDefault: { logger: 'Logger', properties: {} },
         loggerModules: [
-          { logger: 'Logger', LoggerModule: TestLogger },
+          {
+            logger: 'Logger',
+            module: {
+              type: 'file',
+              resource: './test/resources/test.logger',
+            }
+          },
         ],
         loggerSetups: [
           { name: 'TestLogger', type: 'Module', logger: 'Logger', properties: {} },
@@ -81,7 +87,13 @@ describe('logger.service.js tests', () => {
       const configs = {
         loggerDefault: { logger, properties: {} },
         loggerModules: [
-          { logger, LoggerModule: TestLogger },
+          {
+            logger: 'Logger',
+            module: {
+              type: 'file',
+              resource: './test/resources/test.logger',
+            }
+          },
         ],
         loggerSetups: [
           { name, type, logger, properties: {} },
