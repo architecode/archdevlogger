@@ -180,4 +180,54 @@ describe('logger.metadata.js tests', () => {
       expect(datetime).not.to.be.undefined;
     });
   });
+
+  describe('#ofAuthor()', () => {
+    it('expect to get name and type.', () => {
+      // arranges
+      const author = 'name:|:type';
+
+      // acts
+      const { name, type } = LoggerMetadata.ofAuthor(author);
+
+      // asserts
+      expect(name).to.equal('name');
+      expect(type).to.equal('type');
+    });
+
+    it('expect to get name and type.', () => {
+      // arranges
+      const author = 'name';
+
+      // acts
+      const { name, type } = LoggerMetadata.ofAuthor(author);
+
+      // asserts
+      expect(name).to.equal('name');
+      expect(type).to.be.undefined;
+    });
+
+    it('expect to get name and type.', () => {
+      // arranges
+      const author = ':|:type';
+
+      // acts
+      const { name, type } = LoggerMetadata.ofAuthor(author);
+
+      // asserts
+      expect(name).to.be.undefined;
+      expect(type).to.equal('type');
+    });
+
+    it('expect to get name and type.', () => {
+      // arranges
+      const author = 'UNKNOWN';
+
+      // acts
+      const { name, type } = LoggerMetadata.ofAuthor(author);
+
+      // asserts
+      expect(name).to.be.undefined;
+      expect(type).to.be.undefined;
+    });
+  });
 });
