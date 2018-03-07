@@ -10,13 +10,14 @@ export const ArchDevLogger = {
     DefinedLoggerProperties,
     LoggerMetadata,
     CommonLogLevels,
-    SysLogLevels
+    SysLogLevels,
   },
   Errors: {
-    ArchDevLoggerError
+    ArchDevLoggerError,
+    UndefinedDefaultLoggerError,
   },
   Services: {
-    LoggerService
+    LoggerService,
   },
   ExtensibleLogger,
   GlobalLoggerService,
