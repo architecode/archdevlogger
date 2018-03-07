@@ -1,4 +1,5 @@
 import { LoggerRegistry } from "../core/logger.registry";
+import { Loader } from "../core";
 
 export class LoggerService {
   private Registry: LoggerRegistry;
@@ -16,7 +17,7 @@ export class LoggerService {
 
   configure(configs: {
     defaultLogger?: { logger: string; properties?: any; };
-    loggerModules?: { logger: string; LoggerModule: any; }[];
+    loggerModules?: { logger: string; module: { type: string; resource: string; options?: any; }; }[];
     loggerSetups?: { name: string; type: string; logger?: string; properties?: any; }[];
   } = {}) {
     if (configs.defaultLogger) {
@@ -24,7 +25,7 @@ export class LoggerService {
     }
 
     if (Array.isArray(configs.loggerModules)) {
-      configs.loggerModules.forEach(each => this.setLoggerModule(each.logger, each.LoggerModule));
+      configs.loggerModules.forEach(each => this.setLoggerModule(each.logger, Loader.loadLoggerModule(each.module)));
     }
 
     if (Array.isArray(configs.loggerSetups)) {
