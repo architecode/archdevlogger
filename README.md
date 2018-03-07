@@ -55,7 +55,7 @@ Logger Service defines **Logger Modules** by _logger_ and _logger module_.
 + **LoggerModule**: _any_ - defines the **module** of logger
 
 ```javascript
-service.setLoggerModule(logger, loggerModule);
+service.setLoggerModule(logger, LoggerModule);
 ```
 
 ### Logger Setups
