@@ -20,11 +20,11 @@ export class LoggerMetadata {
 
   setAuthor(name?: string, type?: string) {
     if (name && type) {
-      this.Author = `${name}::${type}`;
+      this.Author = `${name}:|:${type}`;
     } else if (name) {
       this.Author = name;
     } else if (type) {
-      this.Author = `::${type}`;
+      this.Author = `:|:${type}`;
     } else {
       this.Author = "UNKNOWN";
     }
