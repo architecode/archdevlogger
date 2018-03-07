@@ -1,25 +1,25 @@
-import { LoggerDefined } from "./lib/common";
-import { LogHeaders, CommonLogLevels, SysLogLevels } from "./lib/core";
-import { DefinedLoggerConfig, DefaultLogger, LoggerModuleService, LoggerService } from "./lib/services";
-import { ExtensibleLogger } from "./lib";
+import { DefinedLoggerProperties, LoggerMetadata, CommonLogLevels, SysLogLevels } from "./lib/core";
+import { ArchDevLoggerError, UndefinedDefaultLoggerError } from "./lib/errors";
+import { LoggerService } from "./lib/services";
+import { ExtensibleLogger, GlobalLoggerService } from "./lib";
 
-export { LoggerConfig, LoggerDefined, LoggerSetup } from "./lib/common";
-export { LogProperties } from "./lib/core";
+export { ILoggerProperties } from "./lib/core";
 
 export const ArchDevLogger = {
   Core: {
-    LogHeaders,
+    DefinedLoggerProperties,
+    LoggerMetadata,
     CommonLogLevels,
-    SysLogLevels,
+    SysLogLevels
+  },
+  Errors: {
+    ArchDevLoggerError
   },
   Services: {
-    DefinedLoggerConfig,
-    DefaultLogger,
-    LoggerModuleService,
-    LoggerService,
+    LoggerService
   },
   ExtensibleLogger,
+  GlobalLoggerService,
 };
 
-Object.freeze(ArchDevLogger.Core);
-Object.freeze(ArchDevLogger.Services);
+Object.freeze(ArchDevLogger);
