@@ -27,7 +27,7 @@ describe('extensible.logger.js tests', () => {
       const instance = new TestLogger('Test', 'Module', 'TestLogger', { props: 'properties' })
 
       // asserts
-      expect(instance.Author).to.equal('Test::Module');
+      expect(instance.Author).to.equal('Test:|:Module');
     });
   });
 
