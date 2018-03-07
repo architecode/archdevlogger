@@ -1,4 +1,4 @@
-import { DefinedLoggerProperties, LoggerMetadata, CommonLogLevels, SysLogLevels } from "./lib/core";
+import { DefinedLoggerProperties, Loader, LoggerMetadata, LoggerRegistry, CommonLogLevels, SysLogLevels } from "./lib/core";
 import { ArchDevLoggerError, UndefinedDefaultLoggerError } from "./lib/errors";
 import { LoggerService } from "./lib/services";
 import { ExtensibleLogger, GlobalLoggerService } from "./lib";
@@ -8,7 +8,9 @@ export { ILoggerProperties } from "./lib/core";
 export const ArchDevLogger = {
   Core: {
     DefinedLoggerProperties,
+    Loader,
     LoggerMetadata,
+    LoggerRegistry,
     CommonLogLevels,
     SysLogLevels,
   },
