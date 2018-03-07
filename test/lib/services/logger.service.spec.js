@@ -2,6 +2,7 @@
 
 const expect = require('chai').expect;
 const sinon = require('sinon');
+const ArchDevLogger = require('../../../dst').ArchDevLogger;
 const ExtensibleLogger = require('../../../dst/lib/extensible.logger').ExtensibleLogger;
 const UndefinedDefaultLoggerError = require('../../../dst/lib/errors').UndefinedDefaultLoggerError;
 const LoggerService = require('../../../dst/lib/services/logger.service').LoggerService;
@@ -12,7 +13,7 @@ describe('logger.service.js tests', () => {
       // arranges
 
       // acts
-      const instance = new LoggerService();
+      const instance = new ArchDevLogger.Services.LoggerService();
 
       // asserts
       expect(instance instanceof LoggerService).to.be.true;
@@ -41,7 +42,13 @@ describe('logger.service.js tests', () => {
       const configs = {
         loggerDefault: { logger: 'Logger', properties: {} },
         loggerModules: [
-          { logger: 'Logger', LoggerModule: TestLogger },
+          {
+            logger: 'Logger',
+            module: {
+              type: 'file',
+              resource: './test/resources/test.logger',
+            }
+          },
         ],
         loggerSetups: [
           { name: 'TestLogger', type: 'Module', logger: 'Logger', properties: {} },
@@ -80,7 +87,13 @@ describe('logger.service.js tests', () => {
       const configs = {
         loggerDefault: { logger, properties: {} },
         loggerModules: [
-          { logger, LoggerModule: TestLogger },
+          {
+            logger: 'Logger',
+            module: {
+              type: 'file',
+              resource: './test/resources/test.logger',
+            }
+          },
         ],
         loggerSetups: [
           { name, type, logger, properties: {} },
@@ -278,7 +291,7 @@ describe('logger.service.js tests', () => {
     });
   });
 
-  describe('#resolveLogger(), useInstanceCache is true', () => {
+  describe('#resolveLogger(), useInstanceCache set as true', () => {
     it('expect to resolve the same instance when it uses instance cache.', () => {
       // arranges
       const registry = new LoggerService();
@@ -402,7 +415,7 @@ describe('logger.service.js tests', () => {
     });
   });
 
-  describe('#resolveLogger(), useInstanceCache is false', () => {
+  describe('#resolveLogger(), useInstanceCache set as false', () => {
     it('expect to resolve the different instance when it uses instance cache.', () => {
       // arranges
       const registry = new LoggerService({ useInstanceCache: false });

@@ -49,7 +49,7 @@ describe('logger.metadata.js tests', () => {
       };
       const type = 'Module';
       const expected = {
-        Author: `::${type}`,
+        Author: `:|:${type}`,
         Logger: undefined,
         data: 'sample',
         ext: { val: 'test' },
@@ -72,7 +72,7 @@ describe('logger.metadata.js tests', () => {
       const type = 'Module';
       const logger = 'TestLogger';
       const expected = {
-        Author: `${name}::${type}`,
+        Author: `${name}:|:${type}`,
         Logger: logger,
         data: 'sample',
         ext: { val: 'test' },
@@ -97,7 +97,7 @@ describe('logger.metadata.js tests', () => {
       instance.setAuthor();
 
       // asserts
-      expect(arranged).to.equal('name::type');
+      expect(arranged).to.equal('name:|:type');
       expect(instance.Author).to.equal(expected);
     });
 
@@ -116,7 +116,7 @@ describe('logger.metadata.js tests', () => {
     it('expect to set an author with type.', () => {
       // arranges
       const instance = new LoggerMetadata();
-      const expected = '::type';
+      const expected = ':|:type';
 
       // acts
       instance.setAuthor(undefined, 'type');
@@ -128,7 +128,7 @@ describe('logger.metadata.js tests', () => {
     it('expect to set an author with name and type.', () => {
       // arranges
       const instance = new LoggerMetadata();
-      const expected = 'name::type';
+      const expected = 'name:|:type';
 
       // acts
       instance.setAuthor('name', 'type');
@@ -178,6 +178,56 @@ describe('logger.metadata.js tests', () => {
       // asserts
       expect(result).not.to.be.undefined;
       expect(datetime).not.to.be.undefined;
+    });
+  });
+
+  describe('#ofAuthor()', () => {
+    it('expect to get name and type.', () => {
+      // arranges
+      const author = 'name:|:type';
+
+      // acts
+      const { name, type } = LoggerMetadata.ofAuthor(author);
+
+      // asserts
+      expect(name).to.equal('name');
+      expect(type).to.equal('type');
+    });
+
+    it('expect to get name and type.', () => {
+      // arranges
+      const author = 'name';
+
+      // acts
+      const { name, type } = LoggerMetadata.ofAuthor(author);
+
+      // asserts
+      expect(name).to.equal('name');
+      expect(type).to.be.undefined;
+    });
+
+    it('expect to get name and type.', () => {
+      // arranges
+      const author = ':|:type';
+
+      // acts
+      const { name, type } = LoggerMetadata.ofAuthor(author);
+
+      // asserts
+      expect(name).to.be.undefined;
+      expect(type).to.equal('type');
+    });
+
+    it('expect to get name and type.', () => {
+      // arranges
+      const author = 'UNKNOWN';
+
+      // acts
+      const { name, type } = LoggerMetadata.ofAuthor(author);
+
+      // asserts
+      expect(name).to.be.undefined;
+      expect(type).to.be.undefined;
     });
   });
 });
