@@ -2,98 +2,69 @@
 
 Logging Service with Extensible Logger Library
 
-## Overview
+## Logger Service
 
-The library provides **Logging Service** with **Extensible Logger** using **Defineds-Setups Pattern** and **Configurations**.
+The library provides **LoggerService** class.
 
-## Concepts
+### Constructing an instance
 
-The library uses **Defineds-Setups Pattern** which **_defines a logger_** and **_provides a logger setup_**.
+In **JavaScript**:
+```javascript
+const ArchDevLogger = require('archdevlogger').ArchDevLogger;
 
-#### Defined Loggers
+const service = new ArchDevLogger.Services.LoggerService();
+```
 
-It defines Loggers.
+In **TypeScript**:
+```typescript
+import { ArchDevLogger } from "archdevlogger";
+
+const service = new ArchDevLogger.Services.LoggerService();
+```
+
+#### Constructor Options
+
+* **useInstanceCache** (_default_: **true**) - defines whether it _uses cache_ for **logger instances**
 
 ```javascript
-const defined = {
-  logger: string;
-  module: string;
-  description?: string;
+const options = {
+  useInstanceCache: true
 };
+
+const service = new ArchDevLogger.Services.LoggerService(options);
 ```
 
-+ **logger**: _string_ - defines **the _name_ of logger**
-+ **module**: _string_ - defines **the _module_ by module name or path** [e.g., "*logger\_module*" or "*./path/to/logger.file*"]
-+ **description**: _string_ (optional) - describes **the logger**
+### Default Logger
+
+Logger Service defines **Default Logger** by _logger_ and _properties_.
+
++ **logger**: _string_ - defines the **name** of logger module
++ **properties**: _any_ - defines the **properties** of default logger instance
 
 ```javascript
-const examples = [
-  { logger: "m_logger", module: "logger_module", description: "module logger" },
-  { logger: "f_logger", module: "./path/to/logger.file", description: "file logger" },
-];
+service.setDefaultLogger(logger, properties);
 ```
 
-In the example, the logger, _named_ **m\_logger**, is a module logger. It's expected in **node\_modules**.
+### Logger Modules
 
-On the other hand, the logger, _named_ **f\_logger**, is a file logger. It's expected in **[application\_path]/path/to/logger.file**.
+Logger Service defines **Logger Modules** by _logger_ and _logger module_.
 
-#### Loggers Setups
-
-It provides Loggers Setups.
++ **logger**: _string_ - defines the **name** of logger module
++ **LoggerModule**: _any_ - defines the **module** of logger
 
 ```javascript
-const setup = {
-  name: string;
-  type: string;
-  logger: string;
-  properties?: any;
-};
+service.setLoggerModule(logger, loggerModule);
 ```
 
-+ **name**: _string_ - defines the **name** of <u>_logger instance_</u>
-+ **type**: _string_ - defines the **type** of <u>_logger instance_</u>
-+ **logger**: _string_ - identifies the _defined_ **logger** to be used
-+ **properties**: _any_ (optional) - provides the **properties** to the logger
+### Logger Setups
+
+Logger Service defines **Logger Setups** by _name_, _type_, _logger_, and _properties_.
+
++ **name**: _string_ - defines the **name** of logger instance
++ **type**: _string_ - defines the **type** of logger instance
++ **logger**: _string_ - defines the name of **logger** module
++ **properties**: _any_ - defines the **properties** of logger instance
 
 ```javascript
-const examples = [
-  {
-    name: "mainLogger",
-    type: "module",
-    logger: "f_logger",
-    properties: {
-      any: { val: "value" }
-    }
-  },
-  {
-    name: "errorLogger",
-    type: "module",
-    logger: "f_logger",
-    properties: {
-      any: { val: "value" }
-    }
-  },
-  {
-    name: "debugLogger",
-    type: "module",
-    logger: "m_logger",
-    properties: {
-      any: { val: "value" }
-    }
-  },
-];
+service.setLoggerSetup(name, type, logger, properties);
 ```
-
-#### Default Logger
-
-It provides the Default Logger.
-
-```javascript
-const defaultLogger = {
-  logger: string;
-  properties?: any;
-};
-```
-
-+ **logger**: _string_ - identifies the _defined_ **logger** to be used
-+ **properties**: _any_ (optional) - provides the **properties** to the logger
