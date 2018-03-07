@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { DefinedLoggerProperties } from "./core";
 import { ILoggerProperties, LoggerMetadata } from "./core";
 
-export abstract class ExtensibleLogger<PropertiesType> extends EventEmitter {
+export abstract class ExtensibleLogger<PropertiesType = any> extends EventEmitter {
   Author: string;
   Metadata: LoggerMetadata;
   Properties: PropertiesType;
