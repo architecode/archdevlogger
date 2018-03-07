@@ -2,106 +2,26 @@
 
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const ExtensibleLogger = require('../../../dst/lib/extensible.logger').ExtensibleLogger;
 const UndefinedDefaultLoggerError = require('../../../dst/lib/errors').UndefinedDefaultLoggerError;
-const LoggerService = require('../../../dst/lib/services/logger.service').LoggerService;
+const LoggerRegistry = require('../../../dst/lib/core/logger.registry').LoggerRegistry;
 
-describe('logger.service.js tests', () => {
+describe('logger.registry.js tests', () => {
   describe('#constructor()', () => {
-    it('expect to create an instance of LoggerService.', () => {
+    it('expect to create an instance of LoggerRegistry.', () => {
       // arranges
 
       // acts
-      const instance = new LoggerService();
+      const instance = new LoggerRegistry();
 
       // asserts
-      expect(instance instanceof LoggerService).to.be.true;
-    });
-  });
-
-  describe('#configure()', () => {
-    class TestLogger extends ExtensibleLogger {
-      log() { }
-    }
-
-    it('expect to configure with empty configs.', () => {
-      // arranges
-      const instance = new LoggerService();
-
-      // acts
-      const act = () => instance.configure();
-
-      // asserts
-      expect(act).not.to.throw();
-    });
-
-    it('expect to configure with valued configs.', () => {
-      // arranges
-      const instance = new LoggerService();
-      const configs = {
-        loggerDefault: { logger: 'Logger', properties: {} },
-        loggerModules: [
-          { logger: 'Logger', LoggerModule: TestLogger },
-        ],
-        loggerSetups: [
-          { name: 'TestLogger', type: 'Module', logger: 'Logger', properties: {} },
-        ]
-      };
-
-      // acts
-      const act = () => instance.configure(configs);
-
-      // asserts
-      expect(act).not.to.throw();
-    });
-
-    it('expect to configure and get a default logger.', () => {
-      // arranges
-      const service = new LoggerService();
-      const configs = {
-        defaultLogger: { logger: 'Logger', properties: {} }
-      };
-      service.configure(configs);
-
-      // acts
-      const defaultLogger = service.getDefaultLogger();
-
-      // asserts
-      expect(defaultLogger.logger).to.equal(configs.defaultLogger.logger);
-      expect(defaultLogger.properties).to.equal(configs.defaultLogger.properties);
-    });
-
-    it('expect to configure and get a logger.', () => {
-      // arranges
-      const service = new LoggerService();
-      const name = 'TestLogger';
-      const type = 'Module';
-      const logger = 'Logger';
-      const configs = {
-        loggerDefault: { logger, properties: {} },
-        loggerModules: [
-          { logger, LoggerModule: TestLogger },
-        ],
-        loggerSetups: [
-          { name, type, logger, properties: {} },
-        ]
-      };
-      service.configure(configs);
-
-      // acts
-      const setup = service.getLoggerSetup(name, type);
-
-      // asserts
-      expect(setup.name).to.equal(name);
-      expect(setup.type).to.equal(type);
-      expect(setup.logger).to.equal(logger);
+      expect(instance instanceof LoggerRegistry).to.be.true;
     });
   });
 
   describe('#getDefaultLogger() and #setDefaultLogger()', () => {
     it('expect to get and set a default logger.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const logger = 'TestLogger';
       const properties = {};
 
@@ -118,7 +38,7 @@ describe('logger.service.js tests', () => {
   describe('#getLoggerModule() and #setLoggerModule()', () => {
     it('expect to get and set a logger module.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const logger = 'TestLogger';
       const loggerModule = function () { };
 
@@ -134,7 +54,7 @@ describe('logger.service.js tests', () => {
   describe('#hasLoggerModule()', () => {
     it('expect to has a logger module.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const logger = 'TestLogger';
       const loggerModule = function () { };
       registry.setLoggerModule(logger, loggerModule);
@@ -152,7 +72,7 @@ describe('logger.service.js tests', () => {
   describe('#getLoggerSetup() and #setLoggerSetup()', () => {
     it('expect to get and set a logger setup.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const name = 'Test';
       const type = 'Module';
       const logger = 'TestLogger';
@@ -171,7 +91,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to get and set a logger setup.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const name = 'Test';
       const type = 'Module';
 
@@ -188,7 +108,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to get undefined when name or type has not been set.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const name = 'Test';
       const type = 'Module';
       const logger = 'TestLogger';
@@ -207,7 +127,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to get and set a logger setup.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const name01 = 'Test01';
       const name02 = 'Test02';
       const type = 'Module';
@@ -231,7 +151,7 @@ describe('logger.service.js tests', () => {
   describe('#hasLoggerSetup()', () => {
     it('expect to has a logger setup.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const name = 'Test';
       const type = 'Module';
       const logger = 'TestLogger';
@@ -251,7 +171,7 @@ describe('logger.service.js tests', () => {
   describe('#resolveDefaultLogger()', () => {
     it('expect to resolve the default logger.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const defaultLogger = 'DefaultLogger';
       const defaultLoggerModule = function () {
         this.value = defaultLogger;
@@ -268,7 +188,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to throw an error.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
 
       // acts
       const act = () => registry.resolveDefaultLogger();
@@ -281,7 +201,7 @@ describe('logger.service.js tests', () => {
   describe('#resolveLogger(), useInstanceCache is true', () => {
     it('expect to resolve the same instance when it uses instance cache.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const logger = 'TestLogger';
       const loggerModule = function () {
         this.value = 'TestValue';
@@ -303,7 +223,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to resolve an instance of the default logger when setup.name is not set.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const defaultLogger = 'DefaultLogger';
       const defaultLoggerModule = function () {
         this.value = defaultLogger;
@@ -331,7 +251,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to resolve an instance of the default logger when setup.type is not set.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const defaultLogger = 'DefaultLogger';
       const defaultLoggerModule = function () {
         this.value = defaultLogger;
@@ -359,7 +279,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to resolve an instance of the default logger when setup.logger is not set.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const defaultLogger = 'DefaultLogger';
       const defaultLoggerModule = function (props) {
         this.value = defaultLogger;
@@ -382,7 +302,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to resolve an instance of the default logger when setup is not set.', () => {
       // arranges
-      const registry = new LoggerService();
+      const registry = new LoggerRegistry();
       const defaultLogger = 'DefaultLogger';
       const defaultLoggerModule = function (props) {
         this.value = defaultLogger;
@@ -405,7 +325,7 @@ describe('logger.service.js tests', () => {
   describe('#resolveLogger(), useInstanceCache is false', () => {
     it('expect to resolve the different instance when it uses instance cache.', () => {
       // arranges
-      const registry = new LoggerService({ useInstanceCache: false });
+      const registry = new LoggerRegistry({ useInstanceCache: false });
       const logger = 'TestLogger';
       const loggerModule = function () {
         this.value = 'TestValue';
@@ -427,7 +347,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to resolve an instance of the default logger when setup.name is not set.', () => {
       // arranges
-      const registry = new LoggerService({ useInstanceCache: false });
+      const registry = new LoggerRegistry({ useInstanceCache: false });
       const defaultLogger = 'DefaultLogger';
       const defaultLoggerModule = function () {
         this.value = defaultLogger;
@@ -455,7 +375,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to resolve an instance of the default logger when setup.type is not set.', () => {
       // arranges
-      const registry = new LoggerService({ useInstanceCache: false });
+      const registry = new LoggerRegistry({ useInstanceCache: false });
       const defaultLogger = 'DefaultLogger';
       const defaultLoggerModule = function () {
         this.value = defaultLogger;
@@ -483,7 +403,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to resolve an instance of the default logger when setup.logger is not set.', () => {
       // arranges
-      const registry = new LoggerService({ useInstanceCache: false });
+      const registry = new LoggerRegistry({ useInstanceCache: false });
       const defaultLogger = 'DefaultLogger';
       const defaultLoggerModule = function (props) {
         this.value = defaultLogger;
@@ -506,7 +426,7 @@ describe('logger.service.js tests', () => {
 
     it('expect to resolve an instance of the default logger when setup is not set.', () => {
       // arranges
-      const registry = new LoggerService({ useInstanceCache: false });
+      const registry = new LoggerRegistry({ useInstanceCache: false });
       const defaultLogger = 'DefaultLogger';
       const defaultLoggerModule = function (props) {
         this.value = defaultLogger;
