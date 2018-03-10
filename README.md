@@ -4,9 +4,18 @@ Logging Service with Extensible Logger Library
 
 ## Overview
 
+The library provides logging service with Extensible Logger.
+
 ## Logger Service
 
 The library provides **LoggerService** class.
+
+The service provides functionalities:
+
+1. Set Default Logger
+1. Set Logger Modules
+1. Set Logger Setups
+1. Resolve Logger Instance
 
 ### Constructing an instance
 
@@ -26,7 +35,7 @@ const service = new ArchDevLogger.Services.LoggerService();
 
 #### Constructor Options
 
-* **useInstanceCache** (_default_: **true**) - defines whether it _uses cache_ for **logger instances**
++ **useInstanceCache** (_default_: **true**) - defines whether it _uses cache_ for **logger instances**
 
 ```javascript
 const options = {
@@ -70,3 +79,16 @@ Logger Service defines **Logger Setups** by _name_, _type_, _logger_, and _prope
 ```javascript
 service.setLoggerSetup(name, type, logger, properties);
 ```
+
+### Logger Instances
+
+Logger Service resolves **Logger Instances** by _name_ and _type_.
+
++ **name**: _string_ - defines the **name** of logger instance
++ **type**: _string_ - defines the **type** of logger instance
+
+```javascript
+service.resolveLogger(name, type);
+```
+
+The service maps **name** and **type** to get **logger** and **properties** that are defined with **Logger Setup**. The **logger** is mapped to **LoggerModule**.

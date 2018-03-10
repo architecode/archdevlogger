@@ -1,3 +1,4 @@
+import { AppEnv } from "archappenv";
 import { LoggerRegistry } from "../core/logger.registry";
 import { Loader } from "../core";
 
@@ -15,21 +16,30 @@ export class LoggerService {
     });
   }
 
-  configure(configs: {
+  static fromConfigFile(configFile: string) {
+    const configFP = AppEnv.Util.resolvePath(configFile);
+    const config = require(configFP);
+    const service = new LoggerService(config);
+    service.configure(config);
+
+    return service;
+  }
+
+  configure(config: {
     defaultLogger?: { logger: string; properties?: any; };
     loggerModules?: { logger: string; module: { type: string; resource: string; options?: any; }; }[];
     loggerSetups?: { name: string; type: string; logger?: string; properties?: any; }[];
   } = {}) {
-    if (configs.defaultLogger) {
-      this.setDefaultLogger(configs.defaultLogger.logger, configs.defaultLogger.properties);
+    if (config.defaultLogger) {
+      this.setDefaultLogger(config.defaultLogger.logger, config.defaultLogger.properties);
     }
 
-    if (Array.isArray(configs.loggerModules)) {
-      configs.loggerModules.forEach(each => this.setLoggerModule(each.logger, Loader.loadLoggerModule(each.module)));
+    if (Array.isArray(config.loggerModules)) {
+      config.loggerModules.forEach(each => this.setLoggerModule(each.logger, Loader.loadLoggerModule(each.module)));
     }
 
-    if (Array.isArray(configs.loggerSetups)) {
-      configs.loggerSetups.forEach(each => this.setLoggerSetup(each.name, each.type, each.logger, each.properties));
+    if (Array.isArray(config.loggerSetups)) {
+      config.loggerSetups.forEach(each => this.setLoggerSetup(each.name, each.type, each.logger, each.properties));
     }
   }
 
