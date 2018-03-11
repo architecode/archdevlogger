@@ -12,10 +12,10 @@ The library provides **LoggerService** class.
 
 The service provides functionalities:
 
-1. Set Default Logger
-1. Set Logger Modules
-1. Set Logger Setups
-1. Resolve Logger Instance
+1. [Set Default Logger](#default-logger)
+1. [Set Logger Modules](#logger-modules)
+1. [Set Logger Setups](#logger-setups)
+1. [Resolve Logger Instance](#logger-instances)
 
 ### Constructing an instance
 
