@@ -78,11 +78,11 @@ export class LoggerRegistry {
     return this.SetupsMap.has(type) && this.SetupsMap.get(type).has(name);
   }
 
-  resolveDefaultLogger(properties?: any) {
+  resolveDefaultLogger(name: string, type: string, properties?: any) {
     const Logger = this.getLoggerModule(this.DefaultLogger.logger);
 
     if (Logger) {
-      return new Logger(properties || this.DefaultLogger.properties);
+      return new Logger(name, type, this.DefaultLogger.logger, properties || this.DefaultLogger.properties);
     } else {
       throw new UndefinedDefaultLoggerError();
     }
@@ -101,9 +101,9 @@ export class LoggerRegistry {
 
         if (logger && this.hasLoggerModule(logger)) {
           const Logger = this.getLoggerModule(logger);
-          instance = new Logger(properties);
+          instance = new Logger(name, type, logger, properties);
         } else {
-          instance = this.resolveDefaultLogger(properties);
+          instance = this.resolveDefaultLogger(name, type, properties);
         }
 
         if (this.UseInstanceCache) {
@@ -113,7 +113,7 @@ export class LoggerRegistry {
         return instance;
       }
     } else {
-      const instance = this.resolveDefaultLogger();
+      const instance = this.resolveDefaultLogger(name, type);
 
       if (this.UseInstanceCache) {
         if (!this.SetupsMap.has(type)) {
