@@ -16,9 +16,9 @@ export class LoggerService {
     });
   }
 
-  static fromConfigFile(configFile: string) {
-    const configFP = AppEnv.Util.resolvePath(configFile);
-    const config = require(configFP);
+  static fromFile(configFile: string) {
+    const filepath = AppEnv.Util.resolveFile(configFile);
+    const config = require(filepath);
     const service = new LoggerService(config);
     service.configure(config);
 
@@ -75,8 +75,8 @@ export class LoggerService {
     return this.Registry.hasLoggerSetup(name, type);
   }
 
-  resolveDefaultLogger(properties?: any) {
-    return this.Registry.resolveDefaultLogger(properties);
+  resolveDefaultLogger(name: string, type: string, properties?: any) {
+    return this.Registry.resolveDefaultLogger(name, type, properties);
   }
 
   resolveLogger(name: string, type: string) {

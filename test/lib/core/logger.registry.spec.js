@@ -281,9 +281,9 @@ describe('logger.registry.js tests', () => {
       // arranges
       const registry = new LoggerRegistry();
       const defaultLogger = 'DefaultLogger';
-      const defaultLoggerModule = function (props) {
+      const defaultLoggerModule = function (name, type, logger, properties) {
         this.value = defaultLogger;
-        Object.assign(this, props);
+        Object.assign(this, properties);
       };
       registry.setDefaultLogger(defaultLogger, {});
       registry.setLoggerModule(defaultLogger, defaultLoggerModule);
@@ -304,9 +304,9 @@ describe('logger.registry.js tests', () => {
       // arranges
       const registry = new LoggerRegistry();
       const defaultLogger = 'DefaultLogger';
-      const defaultLoggerModule = function (props) {
+      const defaultLoggerModule = function (name, type, logger, properties) {
         this.value = defaultLogger;
-        Object.assign(this, props);
+        Object.assign(this, properties);
       };
       registry.setDefaultLogger(defaultLogger, { props: 'default properties' });
       registry.setLoggerModule(defaultLogger, defaultLoggerModule);
@@ -405,9 +405,9 @@ describe('logger.registry.js tests', () => {
       // arranges
       const registry = new LoggerRegistry({ useInstanceCache: false });
       const defaultLogger = 'DefaultLogger';
-      const defaultLoggerModule = function (props) {
+      const defaultLoggerModule = function (name, type, logger, properties) {
         this.value = defaultLogger;
-        Object.assign(this, props);
+        Object.assign(this, properties);
       };
       registry.setDefaultLogger(defaultLogger, {});
       registry.setLoggerModule(defaultLogger, defaultLoggerModule);
@@ -428,9 +428,9 @@ describe('logger.registry.js tests', () => {
       // arranges
       const registry = new LoggerRegistry({ useInstanceCache: false });
       const defaultLogger = 'DefaultLogger';
-      const defaultLoggerModule = function (props) {
+      const defaultLoggerModule = function (name, type, logger, properties) {
         this.value = defaultLogger;
-        Object.assign(this, props);
+        Object.assign(this, properties);
       };
       registry.setDefaultLogger(defaultLogger, { props: 'default properties' });
       registry.setLoggerModule(defaultLogger, defaultLoggerModule);

@@ -2,6 +2,8 @@
 
 const expect = require('chai').expect;
 const sinon = require('sinon');
+const mockRequire = require('mock-require');
+const AppEnv = require('archappenv').AppEnv;
 const ArchDevLogger = require('../../../dst').ArchDevLogger;
 const ExtensibleLogger = require('../../../dst/lib/extensible.logger').ExtensibleLogger;
 const UndefinedDefaultLoggerError = require('../../../dst/lib/errors').UndefinedDefaultLoggerError;
@@ -14,6 +16,30 @@ describe('logger.service.js tests', () => {
 
       // acts
       const instance = new ArchDevLogger.Services.LoggerService();
+
+      // asserts
+      expect(instance instanceof LoggerService).to.be.true;
+    });
+  });
+
+  describe('#fromFile()', () => {
+    const configFile = './test/resources/test.config.json';
+
+    before(() => {
+      const filepath = AppEnv.Util.resolveFile(configFile);
+      const mockConfig = { useInstanceCache: false };
+      mockRequire(filepath, mockConfig);
+    });
+
+    after(() => {
+      mockRequire.stopAll();
+    });
+
+    it('expect to create an instance of LoggerService .', () => {
+      // arranges
+
+      // acts
+      const instance = ArchDevLogger.Services.LoggerService.fromFile(configFile);
 
       // asserts
       expect(instance instanceof LoggerService).to.be.true;
@@ -374,9 +400,9 @@ describe('logger.service.js tests', () => {
       // arranges
       const registry = new LoggerService();
       const defaultLogger = 'DefaultLogger';
-      const defaultLoggerModule = function (props) {
+      const defaultLoggerModule = function (name, type, logger, properties) {
         this.value = defaultLogger;
-        Object.assign(this, props);
+        Object.assign(this, properties);
       };
       registry.setDefaultLogger(defaultLogger, {});
       registry.setLoggerModule(defaultLogger, defaultLoggerModule);
@@ -397,9 +423,9 @@ describe('logger.service.js tests', () => {
       // arranges
       const registry = new LoggerService();
       const defaultLogger = 'DefaultLogger';
-      const defaultLoggerModule = function (props) {
+      const defaultLoggerModule = function (name, type, logger, properties) {
         this.value = defaultLogger;
-        Object.assign(this, props);
+        Object.assign(this, properties);
       };
       registry.setDefaultLogger(defaultLogger, { props: 'default properties' });
       registry.setLoggerModule(defaultLogger, defaultLoggerModule);
@@ -498,9 +524,9 @@ describe('logger.service.js tests', () => {
       // arranges
       const registry = new LoggerService({ useInstanceCache: false });
       const defaultLogger = 'DefaultLogger';
-      const defaultLoggerModule = function (props) {
+      const defaultLoggerModule = function (name, type, logger, properties) {
         this.value = defaultLogger;
-        Object.assign(this, props);
+        Object.assign(this, properties);
       };
       registry.setDefaultLogger(defaultLogger, {});
       registry.setLoggerModule(defaultLogger, defaultLoggerModule);
@@ -521,9 +547,9 @@ describe('logger.service.js tests', () => {
       // arranges
       const registry = new LoggerService({ useInstanceCache: false });
       const defaultLogger = 'DefaultLogger';
-      const defaultLoggerModule = function (props) {
+      const defaultLoggerModule = function (name, type, logger, properties) {
         this.value = defaultLogger;
-        Object.assign(this, props);
+        Object.assign(this, properties);
       };
       registry.setDefaultLogger(defaultLogger, { props: 'default properties' });
       registry.setLoggerModule(defaultLogger, defaultLoggerModule);
