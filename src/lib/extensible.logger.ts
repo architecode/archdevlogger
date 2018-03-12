@@ -45,8 +45,9 @@ export abstract class ExtensibleLogger<PropertiesType = any> extends EventEmitte
     const self: any = this;
     const levels = properties.levels || DefinedLoggerProperties.levels;
     Object.keys(levels).forEach(level =>
-      self[level] = (message: string, data?: any) => self.log(level, message, data));
+      self[level] = (message: string, data?: any) => self.logFormat(level, message, data));
   }
 
-  abstract log(level: string, message: string, data?: any): void;
+  abstract log(logObj: object): void;
+  abstract logFormat(level: string, message: string, data?: object): void;
 }
