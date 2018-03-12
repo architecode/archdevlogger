@@ -6,6 +6,7 @@ const ExtensibleLogger = require('../../dst/lib/extensible.logger').ExtensibleLo
 
 class TestLogger extends ExtensibleLogger {
   log() { }
+  logFormat() { }
 }
 
 describe('extensible.logger.js tests', () => {
@@ -36,7 +37,7 @@ describe('extensible.logger.js tests', () => {
     const logger = new TestLogger();
 
     before(() => {
-      loggerSpy = sinon.spy(logger, 'log');
+      loggerSpy = sinon.spy(logger, 'logFormat');
     });
 
     after(() => {

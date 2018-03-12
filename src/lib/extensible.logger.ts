@@ -48,6 +48,6 @@ export abstract class ExtensibleLogger<PropertiesType = any> extends EventEmitte
       self[level] = (message: string, data?: any) => self.logFormat(level, message, data));
   }
 
-  abstract log(level: string, message: string, data?: object): void;
-  abstract logFormat(logObj: object): void;
+  abstract log(logObj: object): void;
+  abstract logFormat(level: string, message: string, data?: object): void;
 }
