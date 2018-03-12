@@ -4,6 +4,7 @@ import { LoggerService } from "./lib/services";
 import { ExtensibleLogger, GlobalLoggerService } from "./lib";
 
 export { ILoggerProperties } from "./lib/core";
+export { LoggerServiceConfig } from "./lib/services";
 
 export const ArchDevLogger = {
   Core: {

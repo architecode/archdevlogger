@@ -1,6 +1,7 @@
 import { AppEnv } from "archappenv";
 import { LoggerRegistry } from "../core/logger.registry";
 import { Loader } from "../core";
+import { LoggerServiceConfig } from "./logger.service.config";
 
 export class LoggerService {
   private Registry: LoggerRegistry;
@@ -18,9 +19,9 @@ export class LoggerService {
 
   static fromFile(configFile: string) {
     const filepath = AppEnv.Util.resolveFile(configFile);
-    const config = require(filepath);
-    const service = new LoggerService(config);
-    service.configure(config);
+    const config: LoggerServiceConfig = require(filepath);
+    const service = new LoggerService(config.loggerServiceOptions);
+    service.configure(config.loggerServiceConfigs);
 
     return service;
   }
