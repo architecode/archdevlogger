@@ -48,32 +48,28 @@ const service = new ArchDevLogger.Services.LoggerService(options);
 ```javascript
 // in config.js
 const config = {
-  loggerServiceOptions: {
-    useInstanceCache: true,
+  useInstanceCache: true,
+  defaultLogger: {
+    logger: 'AppLogger',
+    properties: {}
   },
-  loggerServiceConfigs: {
-    defaultLogger: {
+  modules: [
+    {
+      logger: 'AppLogger',
+      module: {
+        type: 'module'
+        resource: 'archdevloggerwinston'
+      }
+    }
+  ],
+  setups: [
+    {
+      name: 'TestModule',
+      type: 'Module',
       logger: 'AppLogger',
       properties: {}
-    },
-    loggerModules: [
-      {
-        logger: 'AppLogger',
-        module: {
-          type: 'module'
-          resource: 'archdevloggerwinston'
-        }
-      }
-    ],
-    loggerSetups: [
-      {
-        name: 'TestModule',
-        type: 'Module',
-        logger: 'AppLogger',
-        properties: {}
-      }
-    ]
-  },
+    }
+  ]
 };
 
 module.exports = config;
