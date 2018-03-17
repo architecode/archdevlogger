@@ -22,7 +22,7 @@ export class LoggerService {
     const configs: LoggerServiceConfigs = require(filepath);
     const service = new LoggerService({ useInstanceCache: configs.useInstanceCache });
     service.configure({
-      defaultLogger: configs.defaultLogger,
+      defaultLogger: configs.default,
       loggerModules: configs.modules,
       loggerSetups: configs.setups,
     });
