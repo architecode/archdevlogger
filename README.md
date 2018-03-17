@@ -1,23 +1,21 @@
 # ArchDevLogger [![Build Status](https://travis-ci.org/architecode/archdevlogger.svg?branch=master)](https://travis-ci.org/architecode/archdevlogger) [![Coverage Status](https://coveralls.io/repos/github/architecode/archdevlogger/badge.svg?branch=master&bust=1)](https://coveralls.io/github/architecode/archdevlogger?branch=master)
 
-Logging Service with Extensible Logger Library
+Logging Service with Extensible Logger Library for Developers
 
 ## Overview
 
-The library provides logging service with Extensible Logger.
+The library provides _logging service with Extensible Logger_. The **Extensible Logger** provides general functions _used to extend a logger module_. 
 
 ## Logger Service
 
-The library provides **LoggerService** class.
+The library provides **LoggerService** class. The **LoggerService** is used to create _logger instances_.
 
-The service provides functionalities:
+There are **_two_ ways** to create logger instances.
 
-1. [Set Default Logger](#default-logger)
-1. [Set Logger Modules](#logger-modules)
-1. [Set Logger Setups](#logger-setups)
-1. [Resolve Logger Instance](#logger-instances)
+1. Use instance function, **configure()**
+1. Use class function, **LoggerService.fromFile()**
 
-### Constructing an instance
+#### Constructing an instance of Logger Service
 
 In **JavaScript**:
 ```javascript
@@ -44,6 +42,51 @@ const options = {
 
 const service = new ArchDevLogger.Services.LoggerService(options);
 ```
+
+### LoggerService.fromFile()
+
+```javascript
+// in config.js
+const config = {
+  useInstanceCache: true,
+  defaultLogger: {
+    logger: 'AppLogger',
+    properties: {}
+  },
+  modules: [
+    {
+      logger: 'AppLogger',
+      module: {
+        type: 'module'
+        resource: 'archdevloggerwinston'
+      }
+    }
+  ],
+  setups: [
+    {
+      name: 'TestModule',
+      type: 'Module',
+      logger: 'AppLogger',
+      properties: {}
+    }
+  ]
+};
+
+module.exports = config;
+```
+
+```javascript
+// in application.js
+const service = ArchDevLogger.Services.LoggerService.fromFile('./config.js');
+```
+
+
+The service provides functionalities:
+
+1. [Set Default Logger](#default-logger)
+1. [Set Logger Modules](#logger-modules)
+1. [Set Logger Setups](#logger-setups)
+1. [Resolve Logger Instance](#logger-instances)
 
 ### Default Logger
 

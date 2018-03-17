@@ -1,2 +1,2 @@
 export { LoggerService } from "./logger.service";
-export { LoggerServiceConfig } from "./logger.service.config";
+export { LoggerServiceConfigs } from "./logger.service.configs";
