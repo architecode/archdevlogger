@@ -6,7 +6,7 @@ const mockRequire = require('mock-require');
 const AppEnv = require('archappenv').AppEnv;
 const ArchDevLogger = require('../../../dst').ArchDevLogger;
 const ExtensibleLogger = require('../../../dst/lib/extensible.logger').ExtensibleLogger;
-const UndefinedDefaultLoggerError = require('../../../dst/lib/errors').UndefinedDefaultLoggerError;
+const { DefinedLoggerModuleError, UndefinedDefaultLoggerError } = require('../../../dst/lib/errors');
 const LoggerService = require('../../../dst/lib/services/logger.service').LoggerService;
 
 describe('logger.service.js tests', () => {
@@ -287,36 +287,6 @@ describe('logger.service.js tests', () => {
     });
   });
 
-  describe('#resolveDefaultLogger()', () => {
-    it('expect to resolve the default logger.', () => {
-      // arranges
-      const registry = new LoggerService();
-      const defaultLogger = 'DefaultLogger';
-      const defaultLoggerModule = function () {
-        this.value = defaultLogger;
-      };
-      registry.setLoggerModule(defaultLogger, defaultLoggerModule);
-      registry.setDefaultLogger(defaultLogger);
-
-      // acts
-      const logger = registry.resolveDefaultLogger();
-
-      // asserts
-      expect(logger.value).to.equal(defaultLogger);
-    });
-
-    it('expect to throw an error.', () => {
-      // arranges
-      const registry = new LoggerService();
-
-      // acts
-      const act = () => registry.resolveDefaultLogger();
-
-      // asserts
-      expect(act).to.throw(UndefinedDefaultLoggerError);
-    });
-  });
-
   describe('#resolveLogger(), useInstanceCache set as true', () => {
     it('expect to resolve the same instance when it uses instance cache.', () => {
       // arranges
@@ -396,7 +366,7 @@ describe('logger.service.js tests', () => {
       expect(logger02.value).to.equal(testLogger);
     });
 
-    it('expect to resolve an instance of the default logger when setup.logger is not set.', () => {
+    it('expect to throw DefinedLoggerModuleError when setup.logger is not set.', () => {
       // arranges
       const registry = new LoggerService();
       const defaultLogger = 'DefaultLogger';
@@ -412,11 +382,10 @@ describe('logger.service.js tests', () => {
       registry.setLoggerSetup(name, type, undefined, properties);
 
       // acts
-      const logger = registry.resolveLogger(name, type);
+      const act = () => registry.resolveLogger(name, type);
 
       // asserts
-      expect(logger.value).to.equal(defaultLogger);
-      expect(logger.props).to.equal(properties.props);
+      expect(act).to.throw(DefinedLoggerModuleError);
     });
 
     it('expect to resolve an instance of the default logger when setup is not set.', () => {
@@ -520,7 +489,7 @@ describe('logger.service.js tests', () => {
       expect(logger02.value).to.equal(testLogger);
     });
 
-    it('expect to resolve an instance of the default logger when setup.logger is not set.', () => {
+    it('expect to throw DefinedLoggerModuleError when setup.logger is not set.', () => {
       // arranges
       const registry = new LoggerService({ useInstanceCache: false });
       const defaultLogger = 'DefaultLogger';
@@ -536,11 +505,10 @@ describe('logger.service.js tests', () => {
       registry.setLoggerSetup(name, type, undefined, properties);
 
       // acts
-      const logger = registry.resolveLogger(name, type);
+      const act = () => registry.resolveLogger(name, type);
 
       // asserts
-      expect(logger.value).to.equal(defaultLogger);
-      expect(logger.props).to.equal(properties.props);
+      expect(act).to.throw(DefinedLoggerModuleError);
     });
 
     it('expect to resolve an instance of the default logger when setup is not set.', () => {

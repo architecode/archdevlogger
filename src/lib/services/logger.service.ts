@@ -80,11 +80,7 @@ export class LoggerService {
     return this.Registry.hasLoggerSetup(name, type);
   }
 
-  resolveDefaultLogger(name: string, type: string, properties?: any) {
-    return this.Registry.resolveDefaultLogger(name, type, properties);
-  }
-
-  resolveLogger(name: string, type: string) {
-    return this.Registry.resolveLogger(name, type);
+  resolveLogger(name: string, type: string, properties?: any) {
+    return this.Registry.resolveLogger(name, type, properties);
   }
 }

@@ -6,6 +6,7 @@
   "typings": "./typings/index.d.ts",
   "scripts": {
     "build": "npm run cleanup && npm run build-ts",
+    "deploy": "npm run build && npm run cix-lic",
     "test": "npm run cleanup && npm run test-ts",
     "test-cvr": "npm run cleanup && npm run test-cvr-ts",
     "test-ts": "npm run build-ts && npm run test-all",

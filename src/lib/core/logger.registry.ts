@@ -1,4 +1,4 @@
-import { UndefinedDefaultLoggerError } from "../errors";
+import { DefinedLoggerModuleError, UndefinedDefaultLoggerError } from "../errors";
 
 export class LoggerRegistry {
   UseInstanceCache: boolean;
@@ -57,10 +57,10 @@ export class LoggerRegistry {
   }
 
   getLoggerSetup(name: string, type: string) {
-    if (this.SetupsMap.has(type) && this.SetupsMap.get(type).has(name)) {
-      const { logger, properties } = this.SetupsMap.get(type).get(name);
+    if (this.hasLoggerSetup(name, type)) {
+      const { logger, properties, instance } = this.SetupsMap.get(type).get(name);
 
-      return { name, type, logger, properties };
+      return { name, type, logger, properties, instance };
     } else {
       return {};
     }
@@ -78,42 +78,37 @@ export class LoggerRegistry {
     return this.SetupsMap.has(type) && this.SetupsMap.get(type).has(name);
   }
 
-  resolveDefaultLogger(name: string, type: string, properties?: any) {
-    const Logger = this.getLoggerModule(this.DefaultLogger.logger);
-
-    if (Logger) {
-      return new Logger(name, type, this.DefaultLogger.logger, properties || this.DefaultLogger.properties);
-    } else {
-      throw new UndefinedDefaultLoggerError();
-    }
-  }
-
-  resolveLogger(name: string, type: string) {
+  resolveLogger(name: string, type: string, properties?: any) {
     if (this.hasLoggerSetup(name, type)) {
-      const typeMap = this.SetupsMap.get(type);
-      const setup = typeMap.get(name);
+      const setup = this.getLoggerSetup(name, type);
+      const { instance, logger } = setup;
 
-      if (this.UseInstanceCache && setup.instance) {
-        return setup.instance;
+      if (this.UseInstanceCache && instance) {
+        return instance;
       } else {
-        const { logger, properties } = setup;
-        let instance;
+        const Logger = logger && this.hasLoggerModule(logger) ? this.getLoggerModule(logger) : undefined;
 
-        if (logger && this.hasLoggerModule(logger)) {
-          const Logger = this.getLoggerModule(logger);
-          instance = new Logger(name, type, logger, properties);
-        } else {
-          instance = this.resolveDefaultLogger(name, type, properties);
+        if (!Logger) {
+          throw new DefinedLoggerModuleError();
         }
 
+        const instance = new Logger(name, type, logger, properties || setup.properties);
+
         if (this.UseInstanceCache) {
-          typeMap.set(name, { logger, properties, instance });
+          const typeMap = this.SetupsMap.get(type);
+          typeMap.set(name, { instance, logger, properties: setup.properties });
         }
 
         return instance;
       }
     } else {
-      const instance = this.resolveDefaultLogger(name, type);
+      const Logger = this.getLoggerModule(this.DefaultLogger.logger);
+
+      if (!Logger) {
+        throw new UndefinedDefaultLoggerError();
+      }
+
+      const instance = new Logger(name, type, this.DefaultLogger.logger, properties || this.DefaultLogger.properties);
 
       if (this.UseInstanceCache) {
         if (!this.SetupsMap.has(type)) {
